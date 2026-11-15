@@ -40,7 +40,7 @@ AgriGate is a full-stack website backed by a **machine-learning model**. Pick an
 
 - **Python 3.10 or newer**
 - **A web browser** (Chrome, Edge, Firefox or Safari)
-- **An internet connection** (the first run installs the model's libraries, and NASA climate data is fetched live)
+- **An internet connection** (to install the model's libraries once, and because NASA climate data is fetched live)
 
 No Node.js or other tools are needed: the website is plain HTML, CSS and JavaScript, served by the Python server.
 
@@ -72,23 +72,35 @@ AgriGate runs on **Python 3**. You only install it once per computer, and it's f
 
 ### Or: download it as a ZIP
 
-1. **Download:** click the green **Code** button above → **Download ZIP**, then unzip it (right-click → **Extract All**).
-2. **Start it:**
-   - **Windows:** double-click **`start_agrigate.py`**.
-   - **Mac:** open **Terminal** (press ⌘ Space, type *Terminal*, press Enter). Type `cd ` (with a space after it), drag the unzipped **AgriGate** folder into the Terminal window, and press **Enter**. Then type `python3 start_agrigate.py` and press **Enter**.
-   - **Linux:** run `python3 start_agrigate.py` in the folder.
-3. A terminal window opens (or, on Mac, Terminal shows the progress). **The first time, it installs the model's libraries by itself** (LightGBM, pandas, NumPy, PyArrow, certifi; about a minute, needs internet).
-4. Your browser opens **http://127.0.0.1:8768/index.html** and the window says `LightGBM model: loaded`. **Keep that window open** while you use AgriGate; close it (or press Ctrl+C) to stop.
+1. **Download:** click the green **Code** button above → **Download ZIP**, then unzip it (right-click → **Extract All** on Windows, or double-click the ZIP on a Mac).
+2. **Open a terminal in the AgriGate folder:**
+   - **Windows:** open the unzipped folder, click the **address bar** at the top, type **`cmd`** and press **Enter**. A black window opens in that folder.
+   - **Mac:** open **Terminal** (press ⌘ Space, type *Terminal*, press Enter). Type `cd ` (with a space after it), drag the unzipped **AgriGate** folder into the Terminal window, and press **Enter**.
+3. **Install the model's libraries** (only once per computer; takes about a minute and needs internet):
+
+   | Windows | Mac |
+   |---|---|
+   | `py -m pip install -r model/requirements.txt` | `python3 -m pip install -r model/requirements.txt` |
+
+   This installs LightGBM, pandas, NumPy, PyArrow and certifi.
+4. **Start AgriGate:**
+
+   | Windows | Mac |
+   |---|---|
+   | `py start_agrigate.py` | `python3 start_agrigate.py` |
+
+   On Windows, after step 3 you can also just double-click `start_agrigate.py` next time.
+5. Your browser opens **http://127.0.0.1:8768/index.html** and the window says `LightGBM model: loaded`. **Keep that window open** while you use AgriGate; close it (or press Ctrl+C) to stop.
 
 ### If something goes wrong (Windows)
 
 | Problem | Fix |
 |---|---|
 | `start_agrigate.py` **opens in Notepad** | Python isn't installed, or isn't set to open `.py` files. Install Python from python.org as above, or right-click the file → **Open with** → **Choose another app** → **Python** → tick **Always** → **OK**. |
-| Double-clicking still doesn't work | Open the AgriGate folder, click the **address bar** at the top, type **`cmd`** and press **Enter**. In the black window, type `py start_agrigate.py` (or `python start_agrigate.py`) and press **Enter**. |
+| Double-clicking doesn't work | Use the terminal steps above: in the black window type `py start_agrigate.py` (or `python start_agrigate.py`) and press **Enter**. |
 | "Smart App Control blocked a file" | Don't use `.bat` files. Start AgriGate with `start_agrigate.py` as above. |
 | `'py' is not recognized` / `'python' is not recognized` | Python wasn't added to PATH. Run the python.org installer again, choose **Modify**, and make sure **Add Python to environment variables** is ticked. |
-| Window says `LightGBM model: NOT loaded` | Check your internet connection, then in the same folder run `py -m pip install -r model/requirements.txt` and start AgriGate again. The site still opens without the model, using a simpler built-in ranking. |
+| Window says `LightGBM model: NOT loaded` | The libraries aren't installed yet. In the same folder run `py -m pip install -r model/requirements.txt` (step 3), then start AgriGate again. Without them the site still opens, using a simpler built-in ranking. |
 
 ### If something goes wrong (Mac)
 
@@ -97,7 +109,7 @@ AgriGate runs on **Python 3**. You only install it once per computer, and it's f
 | "Apple could not verify … is free of malware" | Click **Done**. Don't double-click files to start AgriGate on a Mac; use the Terminal steps above (`python3 start_agrigate.py`). |
 | `python3: command not found`, or a pop-up asks to install developer tools | Install Python from **https://www.python.org/downloads/**, then open a new Terminal window and try again. |
 | `start_agrigate.py` opens in a text editor | That's normal on a Mac. Start it from Terminal with `python3 start_agrigate.py` instead. |
-| Window says `LightGBM model: NOT loaded` | Check your internet connection, then in the same folder run `python3 -m pip install -r model/requirements.txt` and start AgriGate again. |
+| Window says `LightGBM model: NOT loaded` | The libraries aren't installed yet. In the same folder run `python3 -m pip install -r model/requirements.txt` (step 3), then start AgriGate again. |
 
 > AgriGate also fetches live NASA climate data, so keep the computer online while you use it.
 
@@ -322,7 +334,7 @@ With that warmer climate (about +1.5 °C and 9% less rain), **wheat rises from 5
 ```
 AgriGate/
 ├── index.html                    The website (HTML, Tailwind CSS, JavaScript, Leaflet map)
-├── start_agrigate.py             Double-click to start: installs libraries, runs the site and model API
+├── start_agrigate.py             Starts the website and the model API
 ├── render.yaml                   Settings for optional hosting on Render
 ├── model/
 │   ├── agrigate_model.py         Loads the models; predict, climate trend, 2050 re-run
