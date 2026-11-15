@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-AgriGate Portable Server (Zero-Dependency Python 3 Backend + Static Frontend)
-Run on any Mac, Windows, or Linux computer with Python 3 installed.
+AgriGate: double-click this file to start the website (Windows, Mac or Linux, with Python 3 installed).
+The first run installs the model's libraries automatically (needs internet), then opens your browser.
 """
 
 import http.server
@@ -16,8 +16,33 @@ from urllib.parse import urlparse, parse_qs
 
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+REQUIREMENTS = os.path.join(BASE_DIR, "model", "requirements.txt")
 
-# ---- trained LightGBM model (model/agrigate_model.py). Needs: pip install -r model/requirements.txt
+
+def ensure_libraries():
+    """First run on a new computer: install LightGBM, pandas, NumPy and PyArrow if they are missing."""
+    import importlib
+    import importlib.util
+    missing = [m for m in ("lightgbm", "pandas", "numpy", "pyarrow") if importlib.util.find_spec(m) is None]
+    if not missing or os.environ.get("PORT"):        # hosted servers install them in their build step
+        return
+    print("First run: installing the model libraries (" + ", ".join(missing) + "). This can take a minute...")
+    import site
+    import subprocess
+    cmd = [sys.executable, "-m", "pip", "install", "--disable-pip-version-check", "-r", REQUIREMENTS]
+    for extra in ([], ["--user"]):
+        if subprocess.call(cmd + extra) == 0:
+            break
+    try:
+        site.addsitedir(site.getusersitepackages())  # make a fresh --user install visible right away
+    except Exception:
+        pass
+    importlib.invalidate_caches()
+
+
+ensure_libraries()
+
+# ---- trained LightGBM model (model/agrigate_model.py)
 MODEL = None
 MODEL_ERROR = None
 try:
@@ -111,7 +136,7 @@ def main():
         server = ThreadingHTTPServer(("127.0.0.1", port), AgriGateHandler)
     print(f"AgriGate running at {url}")
     print("LightGBM model: " + ("loaded" if MODEL is not None else f"NOT loaded ({MODEL_ERROR}) -> pip install -r model/requirements.txt"))
-    print("Press Ctrl+C to stop.")
+    print("Keep this window open while you use AgriGate. Close it (or press Ctrl+C) to stop.")
 
     if not hosted and "--no-browser" not in sys.argv:
         threading.Timer(0.6, lambda: webbrowser.open(url)).start()
@@ -125,4 +150,9 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except Exception as e:                            # keep a double-clicked window open so the error can be read
+        print(f"\nAgriGate could not start: {e.__class__.__name__}: {e}")
+        if not os.environ.get("PORT"):
+            input("Press Enter to close...")
