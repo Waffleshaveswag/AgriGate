@@ -44,7 +44,31 @@ AgriGate is a full-stack website backed by a **machine-learning model**. Pick an
 
 No Node.js or other tools are needed: the website is plain HTML, CSS and JavaScript, served by the Python server.
 
-### Run locally like this
+### Quick start: one copy-paste
+
+Install Python first ([see below](#installing-python-if-you-dont-have-it)), then copy the whole line for your computer, paste it, and press **Enter**. It downloads AgriGate, installs the libraries and starts the website.
+
+**Windows:** press the Windows key, type **cmd**, press **Enter**, then paste:
+
+```bat
+curl -L -o AgriGate.zip https://github.com/Waffleshaveswag/AgriGate/archive/refs/heads/main.zip && tar -xf AgriGate.zip && cd AgriGate-main && py -m pip install -r model/requirements.txt && py start_agrigate.py
+```
+
+**Mac:** press ⌘ Space, type **Terminal**, press **Enter**, then paste:
+
+```bash
+curl -L -o AgriGate.zip https://github.com/Waffleshaveswag/AgriGate/archive/refs/heads/main.zip && unzip -q AgriGate.zip && cd AgriGate-main && python3 -m pip install -r model/requirements.txt && python3 start_agrigate.py
+```
+
+Your browser opens AgriGate after about a minute. Keep the window open while you use it.
+
+**To start it again later**, open cmd or Terminal and paste:
+
+| Windows | Mac |
+|---|---|
+| `cd AgriGate-main && py start_agrigate.py` | `cd AgriGate-main && python3 start_agrigate.py` |
+
+### Run locally like this (with Git)
 
 ```bash
 git clone https://github.com/Waffleshaveswag/AgriGate.git
