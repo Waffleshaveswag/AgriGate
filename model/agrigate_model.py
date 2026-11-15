@@ -8,7 +8,7 @@ agrigate_model.py - the trained LightGBM models behind AgriGate's crop recommend
 Models: model/models/lightgbm_grown_tuned.txt, lightgbm_yield_tuned.txt (LightGBM, tuned with 5-fold CV grouped by state)
 Training data: NASA POWER climate + USDA SSURGO soil + USGS soil nutrients, with USDA NASS county crop data as the answers.
 """
-import json, math, urllib.parse, urllib.request
+import json, math, ssl, urllib.parse, urllib.request
 from functools import lru_cache
 from pathlib import Path
 
@@ -17,6 +17,11 @@ import pandas as pd
 import lightgbm as lgb
 
 HERE = Path(__file__).resolve().parent
+try:                                   # trusted certificates for https, so NASA POWER works on any computer
+    import certifi                     # (Python from python.org on a Mac has none until an extra install step)
+    _SSL = ssl.create_default_context(cafile=certifi.where())
+except Exception:
+    _SSL = None
 META = json.load(open(HERE / "data" / "feature_columns.json"))
 FEAT, CAT = META["features"], META["categorical"]
 RESULTS = json.load(open(HERE / "data" / "final_results.json"))
@@ -71,7 +76,7 @@ def predict(lat, lon):
 @lru_cache(maxsize=256)
 def _power_history(lat, lon):
     q = dict(parameters="T2M,PRECTOTCORR", community="AG", latitude=lat, longitude=lon, start=1984, end=2025, format="JSON")
-    with urllib.request.urlopen("https://power.larc.nasa.gov/api/temporal/monthly/point?" + urllib.parse.urlencode(q), timeout=60) as r:
+    with urllib.request.urlopen("https://power.larc.nasa.gov/api/temporal/monthly/point?" + urllib.parse.urlencode(q), timeout=60, context=_SSL) as r:
         p = json.load(r)["properties"]["parameter"]
     days = [31, 28.25, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
     ys, ts, rs = [], [], []
