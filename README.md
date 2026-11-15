@@ -36,17 +36,40 @@ AgriGate is a full-stack website backed by a **machine-learning model**. Pick an
 
 ## Run it on any computer
 
-1. **Download:** click the green **Code** button above → **Download ZIP**, then unzip it (right-click → **Extract All**).
-2. **Install Python 3** (once per computer, free):
-   - **Windows:** open the **Microsoft Store**, search **Python 3.12**, click **Get**. Or download it from https://www.python.org/downloads/ and tick **"Add Python to PATH"** during install.
-   - **Mac:** download it from https://www.python.org/downloads/
-3. **Start AgriGate:**
-   - **Windows:** double-click **`start_agrigate.py`**. If Windows asks how to open it, choose **Python**.
-   - **Mac:** right-click **`Start_AgriGate_Mac.command`** → **Open** (macOS asks you to confirm the first time).
-   - **Linux / any terminal:** `python3 start_agrigate.py`
-4. The first start installs the model's libraries by itself (about a minute), then your browser opens **http://127.0.0.1:8768/index.html**. Keep the black window open while you use the site; close it to stop.
+### What you need first: Python 3
 
-> The first start needs an internet connection to install LightGBM, pandas, NumPy and PyArrow. Live NASA climate data is also fetched from the internet. If the terminal says `LightGBM model: NOT loaded`, run `python -m pip install -r model/requirements.txt` and start it again.
+AgriGate runs on **Python 3**. You only install it once per computer, and it's free.
+
+- **Windows:**
+  1. Download it from **https://www.python.org/downloads/** (click the big yellow **Download Python** button).
+  2. Open the installer. On the first screen, **tick "Add python.exe to PATH"** at the bottom. This step is important.
+  3. Click **Install Now** and wait for it to finish.
+
+  Use the python.org installer rather than the Microsoft Store version: python.org also sets up `.py` files to open with Python, so you can double-click to start AgriGate.
+- **Mac:** download and install it from **https://www.python.org/downloads/**.
+- **Check it worked (optional):** open a terminal (on Windows, search **cmd**) and type `python --version`. It should print `Python 3.x.x`.
+
+### Start AgriGate
+
+1. **Download:** click the green **Code** button above → **Download ZIP**, then unzip it (right-click → **Extract All**).
+2. **Start it:**
+   - **Windows:** double-click **`start_agrigate.py`**.
+   - **Mac:** right-click **`Start_AgriGate_Mac.command`** → **Open** (macOS asks you to confirm the first time).
+   - **Linux:** run `python3 start_agrigate.py` in the folder.
+3. A black window opens. **The first time, it installs the model's libraries by itself** (LightGBM, pandas, NumPy, PyArrow; about a minute, needs internet).
+4. Your browser opens **http://127.0.0.1:8768/index.html** and the black window says `LightGBM model: loaded`. **Keep the black window open** while you use AgriGate; close it to stop.
+
+### If something goes wrong (Windows)
+
+| Problem | Fix |
+|---|---|
+| `start_agrigate.py` **opens in Notepad** | Python isn't installed, or isn't set to open `.py` files. Install Python from python.org as above, or right-click the file → **Open with** → **Choose another app** → **Python** → tick **Always** → **OK**. |
+| Double-clicking still doesn't work | Open the AgriGate folder, click the **address bar** at the top, type **`cmd`** and press **Enter**. In the black window, type `py start_agrigate.py` (or `python start_agrigate.py`) and press **Enter**. |
+| "Smart App Control blocked a file" | Don't use `.bat` files. Start AgriGate with `start_agrigate.py` as above. |
+| `'py' is not recognized` / `'python' is not recognized` | Python wasn't added to PATH. Run the python.org installer again, choose **Modify**, and make sure **Add Python to environment variables** is ticked. |
+| Window says `LightGBM model: NOT loaded` | Check your internet connection, then in the same folder run `py -m pip install -r model/requirements.txt` and start AgriGate again. The site still opens without the model, using a simpler built-in ranking. |
+
+> AgriGate also fetches live NASA climate data, so keep the computer online while you use it.
 
 ---
 
