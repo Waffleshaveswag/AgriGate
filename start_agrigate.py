@@ -23,7 +23,7 @@ def ensure_libraries():
     """First run on a new computer: install LightGBM, pandas, NumPy and PyArrow if they are missing."""
     import importlib
     import importlib.util
-    missing = [m for m in ("lightgbm", "pandas", "numpy", "pyarrow") if importlib.util.find_spec(m) is None]
+    missing = [m for m in ("lightgbm", "pandas", "numpy", "pyarrow", "certifi") if importlib.util.find_spec(m) is None]
     if not missing or os.environ.get("PORT"):        # hosted servers install them in their build step
         return
     print("First run: installing the model libraries (" + ", ".join(missing) + "). This can take a minute...")
