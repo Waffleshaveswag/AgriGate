@@ -15,8 +15,6 @@ AgriGate is a full-stack website backed by a **machine-learning model**. Pick an
 - **How your crops fit the soil**: nutrient balance (nitrogen, phosphorus, sulfur), soil pH fit, and a two-year rotation that starts with your primary crop
 - **Where the climate is heading**: a linear-regression trend on 42 years of NASA data at your exact location, and how each crop's chance changes by 2050
 
-![AgriGate website](docs/screenshot_overview.jpg)
-
 ---
 
 ## Contents
