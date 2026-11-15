@@ -1,0 +1,59 @@
+{
+ "params_tuned": {
+  "learning_rate": 0.03,
+  "num_leaves": 31,
+  "min_data_in_leaf": 50,
+  "feature_fraction": 0.5,
+  "bagging_fraction": 1.0,
+  "bagging_freq": 1,
+  "lambda_l2": 0.0
+ },
+ "boosting_rounds": 446,
+ "cv": "GroupKFold(5) by state (tested on unseen states)",
+ "grown_auc_overall": {
+  "rule_tree": 0.5610381403247267,
+  "lightgbm_default": 0.9772503843300437,
+  "lightgbm_tuned": 0.9746192474645957
+ },
+ "grown_auc_median_per_crop": {
+  "rule_tree": 0.5274354683300371,
+  "lightgbm_default": 0.7910137430904204,
+  "lightgbm_tuned": 0.80101547247026
+ },
+ "grown_auc_per_crop_tuned": {
+  "Green Peas": 0.435,
+  "Beet": 0.505,
+  "Eggplants": 0.573,
+  "Tomatoes": 0.6,
+  "Asparagus": 0.638,
+  "Cabbage": 0.662,
+  "Broccoli": 0.674,
+  "Hay": 0.712,
+  "Lettuce": 0.716,
+  "Potatoes": 0.748,
+  "Kale": 0.759,
+  "Spinach": 0.787,
+  "Cucumbers": 0.801,
+  "Chilli Peppers": 0.802,
+  "Wheat": 0.803,
+  "Watermelon": 0.825,
+  "Cauliflowers": 0.827,
+  "Corn": 0.848,
+  "Endive": 0.865,
+  "Rice": 0.909,
+  "Sugarcane": 0.911,
+  "Sugar Beets": 0.922,
+  "Soybeans": 0.924,
+  "Cotton": 0.935,
+  "Peanuts": 0.947
+ },
+ "yield_r2": {
+  "crop_average": 0.00444412563585217,
+  "lightgbm_default": 0.3590270600481399,
+  "lightgbm_tuned": 0.3564816861301755
+ },
+ "yield_mae": {
+  "crop_average": 0.19175501320842606,
+  "lightgbm_tuned": 0.143768763470117
+ }
+}
