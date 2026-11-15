@@ -36,7 +36,28 @@ AgriGate is a full-stack website backed by a **machine-learning model**. Pick an
 
 ## Run it on any computer
 
-### What you need first: Python 3
+### Requirements
+
+- **Python 3.10 or newer**
+- **A web browser** (Chrome, Edge, Firefox or Safari)
+- **An internet connection** (the first run installs the model's libraries, and NASA climate data is fetched live)
+
+No Node.js or other tools are needed: the website is plain HTML, CSS and JavaScript, served by the Python server.
+
+### Run locally like this
+
+```bash
+git clone https://github.com/Waffleshaveswag/AgriGate.git
+cd AgriGate
+python -m pip install -r model/requirements.txt
+python start_agrigate.py
+```
+
+Your browser opens **http://127.0.0.1:8768/index.html** automatically. On Mac or Linux, use `python3` instead of `python`.
+
+Prefer not to use a terminal? Follow the steps below instead.
+
+### Installing Python (if you don't have it)
 
 AgriGate runs on **Python 3**. You only install it once per computer, and it's free.
 
@@ -49,7 +70,7 @@ AgriGate runs on **Python 3**. You only install it once per computer, and it's f
 - **Mac:** download and install it from **https://www.python.org/downloads/**.
 - **Check it worked (optional):** open a terminal (on Windows, search **cmd**) and type `python --version`. It should print `Python 3.x.x`.
 
-### Start AgriGate
+### Or: download and double-click (no terminal)
 
 1. **Download:** click the green **Code** button above → **Download ZIP**, then unzip it (right-click → **Extract All**).
 2. **Start it:**
