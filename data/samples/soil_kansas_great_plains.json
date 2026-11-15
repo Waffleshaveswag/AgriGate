@@ -1,0 +1,39 @@
+{
+ "ph": 6.33,
+ "clay_pct": 18.8,
+ "sand_pct": 50.9,
+ "silt_pct": 30.3,
+ "soc_g_kg": 13.77,
+ "nitrogen_g_kg": 1.43,
+ "texture_class": "loam",
+ "source": "SoilGrids 250m (ISRIC)",
+ "depth": "0-15 cm (weighted mean of 0-5 and 5-15 cm)",
+ "units": {
+  "clay_pct": "%",
+  "nitrogen_g_kg": "g/kg",
+  "ph": "-",
+  "sand_pct": "%",
+  "silt_pct": "%",
+  "soc_g_kg": "g/kg"
+ },
+ "depths": {
+  "0-5cm": {
+   "clay_pct": 19.0,
+   "nitrogen_g_kg": 2.13,
+   "ph": 6.4,
+   "sand_pct": 51.1,
+   "silt_pct": 29.9,
+   "soc_g_kg": 21.3
+  },
+  "5-15cm": {
+   "clay_pct": 18.7,
+   "nitrogen_g_kg": 1.08,
+   "ph": 6.3,
+   "sand_pct": 50.8,
+   "silt_pct": 30.5,
+   "soc_g_kg": 10.0
+  }
+ },
+ "lat": 38.5,
+ "lon": -98.5
+}

@@ -1,0 +1,88 @@
+{
+ "farms": {
+  "sahel_niger": {
+   "name": "Sahel, Niger",
+   "lat": 13.5,
+   "lon": 2.1,
+   "power": "power_sahel_niger.json",
+   "soil": "soil_sahel_niger.json"
+  },
+  "kansas_great_plains": {
+   "name": "Kansas Great Plains, USA",
+   "lat": 38.5,
+   "lon": -98.5,
+   "power": "power_kansas_great_plains.json",
+   "soil": "soil_kansas_great_plains.json"
+  },
+  "punjab_india": {
+   "name": "Punjab, India",
+   "lat": 30.9,
+   "lon": 75.8,
+   "power": "power_punjab_india.json",
+   "soil": "soil_punjab_india.json"
+  },
+  "california_central_valley": {
+   "name": "California Central Valley, USA",
+   "lat": 36.7,
+   "lon": -119.8,
+   "power": "power_california_central_valley.json",
+   "soil": "soil_california_central_valley.json"
+  },
+  "sao_paulo_brazil": {
+   "name": "Sao Paulo state, Brazil",
+   "lat": -22.0,
+   "lon": -47.9,
+   "power": "power_sao_paulo_brazil.json",
+   "soil": "soil_sao_paulo_brazil.json"
+  },
+  "ukraine_poltava": {
+   "name": "Poltava, Ukraine",
+   "lat": 49.6,
+   "lon": 34.5,
+   "power": "power_ukraine_poltava.json",
+   "soil": "soil_ukraine_poltava.json"
+  }
+ },
+ "maps": {
+  "ndvi": {
+   "file": "gibs_ndvi.png",
+   "layer": "MODIS_Terra_L3_NDVI_Monthly",
+   "date": "2026-08-01",
+   "width": 2048,
+   "height": 1024,
+   "projection": "EPSG:4326 equirectangular; row 0 = 90N, col 0 = 180W",
+   "units": "NDVI (-1..1, no unit)",
+   "colormap": "colormap_MODIS_L3_NDVI.xml"
+  },
+  "soil_moisture": {
+   "file": "gibs_soil_moisture.png",
+   "layer": "SMAP_L4_Analyzed_Root_Zone_Soil_Moisture",
+   "date": "2026-08-01",
+   "width": 2048,
+   "height": 1024,
+   "projection": "EPSG:4326 equirectangular; row 0 = 90N, col 0 = 180W",
+   "units": "m3/m3 (= cm3/cm3)",
+   "colormap": "colormap_SMAP_Analyzed_Soil_Moisture.xml"
+  },
+  "blue_marble": {
+   "file": "gibs_blue_marble.png",
+   "layer": "BlueMarble_NextGeneration",
+   "date": null,
+   "width": 2048,
+   "height": 1024,
+   "projection": "EPSG:4326 equirectangular; row 0 = 90N, col 0 = 180W",
+   "units": null
+  },
+  "cropland": {
+   "file": "gibs_cropland.png",
+   "layer": "Agricultural_Lands_Croplands_2000",
+   "date": null,
+   "width": 2048,
+   "height": 1024,
+   "projection": "EPSG:4326 equirectangular; row 0 = 90N, col 0 = 180W",
+   "units": "fraction of the pixel that is cropland (0..1)",
+   "colormap": "colormap_Agricultural_Lands_Croplands_2000.xml"
+  }
+ },
+ "made": "2026-11-05"
+}

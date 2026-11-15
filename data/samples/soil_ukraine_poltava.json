@@ -1,0 +1,41 @@
+{
+ "ph": 7.03,
+ "clay_pct": 29.57,
+ "sand_pct": 21.0,
+ "silt_pct": 49.4,
+ "soc_g_kg": 43.23,
+ "nitrogen_g_kg": 4.34,
+ "texture_class": "clay loam",
+ "source": "SoilGrids 250m (ISRIC)",
+ "depth": "0-15 cm (weighted mean of 0-5 and 5-15 cm)",
+ "units": {
+  "clay_pct": "%",
+  "nitrogen_g_kg": "g/kg",
+  "ph": "-",
+  "sand_pct": "%",
+  "silt_pct": "%",
+  "soc_g_kg": "g/kg"
+ },
+ "depths": {
+  "0-5cm": {
+   "clay_pct": 28.7,
+   "nitrogen_g_kg": 8.01,
+   "ph": 6.9,
+   "sand_pct": 21.6,
+   "silt_pct": 49.6,
+   "soc_g_kg": 86.9
+  },
+  "5-15cm": {
+   "clay_pct": 30.0,
+   "nitrogen_g_kg": 2.5,
+   "ph": 7.1,
+   "sand_pct": 20.7,
+   "silt_pct": 49.3,
+   "soc_g_kg": 21.4
+  }
+ },
+ "lat": 49.72,
+ "lon": 34.5,
+ "note": "No soil data at the exact point (town, water or rock?); values are from 13.3 km away at (49.72, 34.50).",
+ "distance_km": 13.3
+}
