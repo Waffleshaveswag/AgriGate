@@ -66,7 +66,7 @@ AgriGate runs on **Python 3**. You only install it once per computer, and it's f
   2. Open the installer. On the first screen, **tick "Add python.exe to PATH"** at the bottom. This step is important.
   3. Click **Install Now** and wait for it to finish.
 
-  Use the python.org installer rather than the Microsoft Store version: python.org also sets up `.py` files to open with Python, so you can double-click to start AgriGate.
+  Use the python.org installer rather than the Microsoft Store version: it sets up the `py` and `python` commands used below.
 - **Mac:** download and install it from **https://www.python.org/downloads/**.
 - **Check it worked (optional):** open a terminal (on Windows, search **cmd**) and type `python --version`. It should print `Python 3.x.x`.
 
@@ -83,21 +83,21 @@ AgriGate runs on **Python 3**. You only install it once per computer, and it's f
    | `py -m pip install -r model/requirements.txt` | `python3 -m pip install -r model/requirements.txt` |
 
    This installs LightGBM, pandas, NumPy, PyArrow and certifi.
-4. **Start AgriGate:**
+4. **Start AgriGate** (type this in the same window; every time you want to use AgriGate, open a terminal in the folder again and run this line):
 
    | Windows | Mac |
    |---|---|
    | `py start_agrigate.py` | `python3 start_agrigate.py` |
 
-   On Windows, after step 3 you can also just double-click `start_agrigate.py` next time.
+   > **Don't double-click `start_agrigate.py`.** Depending on the computer, that just opens the code in Notepad, VS Code or a text editor instead of running it. Always start AgriGate with the command in step 4.
+
 5. Your browser opens **http://127.0.0.1:8768/index.html** and the window says `LightGBM model: loaded`. **Keep that window open** while you use AgriGate; close it (or press Ctrl+C) to stop.
 
 ### If something goes wrong (Windows)
 
 | Problem | Fix |
 |---|---|
-| `start_agrigate.py` **opens in Notepad** | Python isn't installed, or isn't set to open `.py` files. Install Python from python.org as above, or right-click the file → **Open with** → **Choose another app** → **Python** → tick **Always** → **OK**. |
-| Double-clicking doesn't work | Use the terminal steps above: in the black window type `py start_agrigate.py` (or `python start_agrigate.py`) and press **Enter**. |
+| `start_agrigate.py` **opens in Notepad or VS Code** | That happens when you double-click it. Close it, and start AgriGate from the terminal instead: open the folder, click the address bar, type `cmd`, press Enter, then type `py start_agrigate.py` and press Enter. |
 | "Smart App Control blocked a file" | Don't use `.bat` files. Start AgriGate with `start_agrigate.py` as above. |
 | `'py' is not recognized` / `'python' is not recognized` | Python wasn't added to PATH. Run the python.org installer again, choose **Modify**, and make sure **Add Python to environment variables** is ticked. |
 | Window says `LightGBM model: NOT loaded` | The libraries aren't installed yet. In the same folder run `py -m pip install -r model/requirements.txt` (step 3), then start AgriGate again. Without them the site still opens, using a simpler built-in ranking. |
