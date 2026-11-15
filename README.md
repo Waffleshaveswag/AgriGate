@@ -70,15 +70,15 @@ AgriGate runs on **Python 3**. You only install it once per computer, and it's f
 - **Mac:** download and install it from **https://www.python.org/downloads/**.
 - **Check it worked (optional):** open a terminal (on Windows, search **cmd**) and type `python --version`. It should print `Python 3.x.x`.
 
-### Or: download and double-click (no terminal)
+### Or: download it as a ZIP
 
 1. **Download:** click the green **Code** button above → **Download ZIP**, then unzip it (right-click → **Extract All**).
 2. **Start it:**
    - **Windows:** double-click **`start_agrigate.py`**.
-   - **Mac:** right-click **`Start_AgriGate_Mac.command`** → **Open** (macOS asks you to confirm the first time).
+   - **Mac:** open **Terminal** (press ⌘ Space, type *Terminal*, press Enter). Type `cd ` (with a space after it), drag the unzipped **AgriGate** folder into the Terminal window, and press **Enter**. Then type `python3 start_agrigate.py` and press **Enter**.
    - **Linux:** run `python3 start_agrigate.py` in the folder.
-3. A black window opens. **The first time, it installs the model's libraries by itself** (LightGBM, pandas, NumPy, PyArrow; about a minute, needs internet).
-4. Your browser opens **http://127.0.0.1:8768/index.html** and the black window says `LightGBM model: loaded`. **Keep the black window open** while you use AgriGate; close it to stop.
+3. A terminal window opens (or, on Mac, Terminal shows the progress). **The first time, it installs the model's libraries by itself** (LightGBM, pandas, NumPy, PyArrow, certifi; about a minute, needs internet).
+4. Your browser opens **http://127.0.0.1:8768/index.html** and the window says `LightGBM model: loaded`. **Keep that window open** while you use AgriGate; close it (or press Ctrl+C) to stop.
 
 ### If something goes wrong (Windows)
 
@@ -89,6 +89,15 @@ AgriGate runs on **Python 3**. You only install it once per computer, and it's f
 | "Smart App Control blocked a file" | Don't use `.bat` files. Start AgriGate with `start_agrigate.py` as above. |
 | `'py' is not recognized` / `'python' is not recognized` | Python wasn't added to PATH. Run the python.org installer again, choose **Modify**, and make sure **Add Python to environment variables** is ticked. |
 | Window says `LightGBM model: NOT loaded` | Check your internet connection, then in the same folder run `py -m pip install -r model/requirements.txt` and start AgriGate again. The site still opens without the model, using a simpler built-in ranking. |
+
+### If something goes wrong (Mac)
+
+| Problem | Fix |
+|---|---|
+| "Apple could not verify … is free of malware" | Click **Done**. Don't double-click files to start AgriGate on a Mac; use the Terminal steps above (`python3 start_agrigate.py`). |
+| `python3: command not found`, or a pop-up asks to install developer tools | Install Python from **https://www.python.org/downloads/**, then open a new Terminal window and try again. |
+| `start_agrigate.py` opens in a text editor | That's normal on a Mac. Start it from Terminal with `python3 start_agrigate.py` instead. |
+| Window says `LightGBM model: NOT loaded` | Check your internet connection, then in the same folder run `python3 -m pip install -r model/requirements.txt` and start AgriGate again. |
 
 > AgriGate also fetches live NASA climate data, so keep the computer online while you use it.
 
@@ -314,7 +323,6 @@ With that warmer climate (about +1.5 °C and 9% less rain), **wheat rises from 5
 AgriGate/
 ├── index.html                    The website (HTML, Tailwind CSS, JavaScript, Leaflet map)
 ├── start_agrigate.py             Double-click to start: installs libraries, runs the site and model API
-├── Start_AgriGate_Mac.command    One-click start for Mac
 ├── render.yaml                   Settings for optional hosting on Render
 ├── model/
 │   ├── agrigate_model.py         Loads the models; predict, climate trend, 2050 re-run
