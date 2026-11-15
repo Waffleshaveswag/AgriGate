@@ -1,4 +1,4 @@
-# 🌾 AgriGate
+# AgriGate
 
 ### Which crops fit your farm today, and which will still fit in 2050?
 
@@ -11,9 +11,9 @@
 
 AgriGate is a full-stack website backed by a **machine-learning model**. Pick any place in the 48 mainland United States and the crops you want to grow. AgriGate then tells you:
 
-- 🌱 **How likely each crop is to succeed there**, from a LightGBM model trained on NASA climate data, USDA and USGS soil data, and real USDA farm records for every US county
-- 🧪 **How your crops fit the soil**: nutrient balance (nitrogen, phosphorus, sulfur), soil pH fit, and a two-year rotation that starts with your primary crop
-- 📈 **Where the climate is heading**: a linear-regression trend on 42 years of NASA data at your exact location, and how each crop's chance changes by 2050
+- **How likely each crop is to succeed there**, from a LightGBM model trained on NASA climate data, USDA and USGS soil data, and real USDA farm records for every US county
+- **How your crops fit the soil**: nutrient balance (nitrogen, phosphorus, sulfur), soil pH fit, and a two-year rotation that starts with your primary crop
+- **Where the climate is heading**: a linear-regression trend on 42 years of NASA data at your exact location, and how each crop's chance changes by 2050
 
 ![AgriGate website](docs/screenshot_overview.jpg)
 
@@ -21,22 +21,22 @@ AgriGate is a full-stack website backed by a **machine-learning model**. Pick an
 
 ## Contents
 
-1. [Run it on any computer](#-run-it-on-any-computer)
-2. [How it works](#-how-it-works)
+1. [Run it on any computer](#run-it-on-any-computer)
+2. [How it works](#how-it-works)
 3. [Step 1: The data](#step-1-the-data)
 4. [Step 2: The training table](#step-2-the-training-table)
 5. [Step 3: Training the model](#step-3-training-the-model)
 6. [Step 4: Testing it fairly (no overfitting)](#step-4-testing-it-fairly-no-overfitting)
-7. [Results](#-results)
-8. [Looking ahead to 2050](#-looking-ahead-to-2050)
-9. [The website](#-the-website)
-10. [Project structure and API](#-project-structure)
-11. [Limitations](#-limitations)
-12. [Data sources](#-data-sources)
+7. [Results](#results)
+8. [Looking ahead to 2050](#looking-ahead-to-2050)
+9. [The website](#the-website)
+10. [Project structure and API](#project-structure)
+11. [Limitations](#limitations)
+12. [Data sources](#data-sources)
 
 ---
 
-## 🚀 Run it on any computer
+## Run it on any computer
 
 1. **Download:** click the green **Code** button above → **Download ZIP**, then unzip it.
 2. **Start it:**
@@ -53,7 +53,7 @@ AgriGate is a full-stack website backed by a **machine-learning model**. Pick an
 
 ---
 
-## 🧭 How it works
+## How it works
 
 ![Pipeline: NASA data → prepare and adjust → tune and train LightGBM](training/figures/01_pipeline.png)
 
@@ -112,9 +112,9 @@ Three real rows from the table:
 
 | County · crop | Summer rain | Avg. temperature | Soil pH | Phosphorus | Grown? |
 |---|---|---|---|---|---|
-| Polk, Iowa · corn | 541 mm | 10.1 °C | 6.5 | 976 mg/kg | ✅ Yes |
-| Polk, Iowa · cotton | 541 mm | 10.1 °C | 6.5 | 976 mg/kg | ❌ No |
-| Fresno, California · cotton | 44 mm | 14.6 °C | 6.3 | 511 mg/kg | ✅ Yes |
+| Polk, Iowa · corn | 541 mm | 10.1 °C | 6.5 | 976 mg/kg | Yes |
+| Polk, Iowa · cotton | 541 mm | 10.1 °C | 6.5 | 976 mg/kg | No |
+| Fresno, California · cotton | 44 mm | 14.6 °C | 6.3 | 511 mg/kg | Yes |
 
 > Our hand-written soil rules say Polk County's soil is fine for cotton, yet nobody grows cotton there because it's too cold. **Rules alone miss things like this, which is why we train a model.** The rule's verdict becomes just one clue among the 94.
 
@@ -186,7 +186,7 @@ This is **cross-validation grouped by state** (`GroupKFold`).
 
 ---
 
-## 📊 Results
+## Results
 
 All scores are measured **on states the model never saw during training**.
 
@@ -233,7 +233,7 @@ Among the information about a location, **NASA climate data carries 43%** of the
 
 ---
 
-## 🔮 Looking ahead to 2050
+## Looking ahead to 2050
 
 1. Pull **NASA POWER monthly temperature and rain, 1984–2025**, for the chosen location.
 2. Fit a **linear regression**: the straight line that best fits the yearly values.
@@ -252,13 +252,13 @@ With that warmer climate (about +1.5 °C and 9% less rain), **wheat rises from 5
 
 ---
 
-## 🖥️ The website
+## The website
 
 | Climate trend at your field | Your crops in 2050 |
 |---|---|
 | ![Climate trend card](docs/screenshot_climate.jpg) | ![Your crops in 2050 card](docs/screenshot_2050.jpg) |
 
-- **Field & Crops:** search a place or draw your field, then pick your crops. The first crop is your **primary crop** (click ☆ on another crop to change it). You also see the nutrient balance and soil pH fit.
+- **Field & Crops:** search a place or draw your field, then pick your crops. The first crop is your **primary crop** (click the star on another crop to change it). You also see the nutrient balance and soil pH fit.
 - **Planning:** a two-year rotation that starts with your primary crop, and additional plants ranked by the LightGBM model.
 - **Climate & Soil:** NASA climate trend charts with the regression line to 2050, and how each of your crops' chances changes.
 - **Guide:** a five-step walkthrough that opens on your first visit.
@@ -267,7 +267,7 @@ With that warmer climate (about +1.5 °C and 9% less rain), **wheat rises from 5
 
 ---
 
-## 📁 Project structure
+## Project structure
 
 ```
 Agrigate/
@@ -317,7 +317,7 @@ python3 training/tune_and_figures.py
 
 ---
 
-## ⚠️ Limitations
+## Limitations
 
 - **County level, not field level:** soil and climate are county averages, so two farms in the same county get the same ranking.
 - **"Grown" isn't the same as "can grow":** harvest records also reflect markets, irrigation and tradition. The model learns where crops *are* grown commercially.
@@ -329,7 +329,7 @@ python3 training/tune_and_figures.py
 
 ---
 
-## 📚 Data sources
+## Data sources
 
 - **NASA POWER** (Prediction Of Worldwide Energy Resources), NASA Langley Research Center: https://power.larc.nasa.gov
 - **USDA NRCS Soil Survey Geographic Database (SSURGO)** via Soil Data Access: https://sdmdataaccess.sc.egov.usda.gov
