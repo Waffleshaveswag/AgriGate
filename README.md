@@ -270,7 +270,7 @@ With that warmer climate (about +1.5 °C and 9% less rain), **wheat rises from 5
 ## Project structure
 
 ```
-Agrigate/
+AgriGate/
 ├── index.html                    The website (HTML, Tailwind CSS, JavaScript, Leaflet map)
 ├── start_agrigate.py             Python server: serves the site and the model API
 ├── Start_AgriGate_Windows.bat    One-click start for Windows
