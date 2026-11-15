@@ -36,18 +36,17 @@ AgriGate is a full-stack website backed by a **machine-learning model**. Pick an
 
 ## Run it on any computer
 
-1. **Download:** click the green **Code** button above → **Download ZIP**, then unzip it.
-2. **Start it:**
-   - **Windows:** double-click `Start_AgriGate_Windows.bat`. If Python is missing, it installs it for you; then double-click the file once more.
-   - **Mac:** right-click `Start_AgriGate_Mac.command` → **Open** (macOS asks you to confirm the first time). If Python is missing, it opens the download page.
-   - **Linux / any terminal:**
-     ```bash
-     python3 -m pip install -r model/requirements.txt
-     python3 start_agrigate.py
-     ```
-3. Your browser opens **http://127.0.0.1:8768/index.html** by itself, and the terminal says **`LightGBM model: loaded`**.
+1. **Download:** click the green **Code** button above → **Download ZIP**, then unzip it (right-click → **Extract All**).
+2. **Install Python 3** (once per computer, free):
+   - **Windows:** open the **Microsoft Store**, search **Python 3.12**, click **Get**. Or download it from https://www.python.org/downloads/ and tick **"Add Python to PATH"** during install.
+   - **Mac:** download it from https://www.python.org/downloads/
+3. **Start AgriGate:**
+   - **Windows:** double-click **`start_agrigate.py`**. If Windows asks how to open it, choose **Python**.
+   - **Mac:** right-click **`Start_AgriGate_Mac.command`** → **Open** (macOS asks you to confirm the first time).
+   - **Linux / any terminal:** `python3 start_agrigate.py`
+4. The first start installs the model's libraries by itself (about a minute), then your browser opens **http://127.0.0.1:8768/index.html**. Keep the black window open while you use the site; close it to stop.
 
-> The first start installs the model's libraries (LightGBM, pandas, NumPy, PyArrow), so it needs an internet connection. Live NASA climate data is also fetched from the internet.
+> The first start needs an internet connection to install LightGBM, pandas, NumPy and PyArrow. Live NASA climate data is also fetched from the internet. If the terminal says `LightGBM model: NOT loaded`, run `python -m pip install -r model/requirements.txt` and start it again.
 
 ---
 
@@ -270,8 +269,7 @@ With that warmer climate (about +1.5 °C and 9% less rain), **wheat rises from 5
 ```
 AgriGate/
 ├── index.html                    The website (HTML, Tailwind CSS, JavaScript, Leaflet map)
-├── start_agrigate.py             Python server: serves the site and the model API
-├── Start_AgriGate_Windows.bat    One-click start for Windows
+├── start_agrigate.py             Double-click to start: installs libraries, runs the site and model API
 ├── Start_AgriGate_Mac.command    One-click start for Mac
 ├── render.yaml                   Settings for optional hosting on Render
 ├── model/
