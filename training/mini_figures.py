@@ -56,7 +56,7 @@ fig.subplots_adjust(wspace=0.05)
 save(fig, "mini_corn.png")
 
 # 2050
-sys.path.insert(0, "/home/user/AgriGate_LightGBM/model")
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "model"))
 import agrigate_model as AG
 fu = AG.future(41.6, -93.6, 2050); byc = {r["crop"]: r for r in fu["crops"]}
 show = ["Corn", "Soybeans", "Wheat"]

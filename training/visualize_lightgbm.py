@@ -143,7 +143,7 @@ a1.set_xticks([1, 2, 5, 10, 20, 50, 100, 200, N_TREES]); a1.set_xticklabels(["1"
 a1.set_xlabel("number of trees added so far"); a1.set_ylabel("model's chance the crop is grown (%)")
 a1.set_title("A real prediction, built up tree by tree")
 a1.legend(loc="upper left", fontsize=10.5, frameon=False, bbox_to_anchor=(0.0, 1.0))
-a1.annotate("after tree 1, every example is close\nto the starting guess (about 16–19%)", (1.05, 15.8), (1.12, 3), fontsize=10, color="#444",
+a1.annotate("after tree 1, every example is close\nto the starting guess (about 11–16%)", (1.05, 13), (1.12, 3), fontsize=10, color="#444",
             arrowprops=dict(arrowstyle="-", color=GREY))
 
 g = np.array([gain_total(t) for t in TREES])
@@ -153,7 +153,7 @@ a2.set_xlabel("tree number"); a2.set_ylabel("how much the tree improves the mode
 a2.set_title("Each new tree fixes less (boosting)")
 a2.annotate(f"tree 1: {g[0]:,.0f}", (1, g[0]), (60, g[0] * 0.7), fontsize=10.5, arrowprops=dict(arrowstyle="-", color=GREY))
 a2.annotate(f"tree {N_TREES}: {g[-1]:,.0f}", (N_TREES, g[-1]), (N_TREES * 0.55, g[-1] * 8), fontsize=10.5, arrowprops=dict(arrowstyle="-", color=GREY))
-a2.text(0.98, 0.95, f"learning rate 0.03: each tree's vote is shrunk\nso no single tree dominates; training stopped\nat tree {N_TREES} when "
+a2.text(0.98, 0.95, f"learning rate {float(json.load(open(HERE / 'final_results.json'))['params_tuned']['learning_rate']):g}: each tree's vote is shrunk\nso no single tree dominates; training stopped\nat tree {N_TREES} when "
         "states it never saw\nstopped getting better (early stopping)", transform=a2.transAxes, ha="right", va="top", fontsize=10.5, color="#444")
 fig.suptitle("How boosting works: start from a guess, then each tree corrects the errors left by the trees before it",
              x=0.01, y=1.02, ha="left", fontsize=18, weight="bold", color=DARK)

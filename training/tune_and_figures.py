@@ -120,7 +120,7 @@ box(0.1, 4.0, 3.6, 2.0, "NASA", ["POWER climate 2001-2020", "rain, heat, aridity
 box(0.1, 1.95, 3.6, 1.85, "USDA + USGS soil", ["SSURGO soil per county", "USGS: P K S Ca Mg Zn Fe Mn Cu Mo"], SAND)
 box(0.1, 0.05, 3.6, 1.7, "USDA NASS (answers)", ["Census 2017/2022 harvested acres", "survey yields 2014-2023"], GREY)
 arrow(3.85, 4.75)
-box(4.8, 0.7, 4.3, 4.8, "1  Prepare + adjust data", ["• join 3,108 counties x 26 crops", "  = 80,808 rows", "• fill gaps (SSURGO 77% + fallback)",
+box(4.8, 0.7, 4.3, 4.8, "1  Prepare + adjust data", [f"• join {df.fips.nunique():,} counties x {df.crop.nunique()} crops", f"  = {len(df):,} rows", "• fill gaps (SSURGO 77% + fallback)",
      "• pH-adjusted nutrient levels", "• 25 match features: pH gap,", "  need - supply x 11 nutrients,", "  temperature gap, salt risk",
      "• labels: grown 100+ acres,", "  yield vs national typical"], GREEN)
 arrow(9.25, 10.15)
@@ -140,7 +140,7 @@ names = list(groups); counts = [len(groups[g]) for g in names]
 a1.barh(names[::-1], counts[::-1], color=cols[::-1]); a1.set_title("Prepared for LightGBM: 94 features in 5 groups")
 for i, v in enumerate(counts[::-1]): a1.text(v + 0.4, i, str(v), va="center", weight="bold")
 a1.set_xlabel("number of features")
-stats = [("80,808", "rows (county x crop)"), ("3,108", "US counties"), ("26", "crops"), ("6", "public datasets joined"),
+stats = [(f"{len(df):,}", "rows (county x crop)"), (f"{df.fips.nunique():,}", "US counties"), (str(df.crop.nunique()), "crops"), ("6", "public datasets joined"),
          (f"{int(A.grown_100ac.sum()):,}", "commercial crop-county pairs"), (f"{len(B):,}", "real yield records")]
 a2.axis("off"); a2.set_title("The training table")
 for i, (n, t) in enumerate(stats):
@@ -198,7 +198,7 @@ fig.suptitle("Results on states the model never saw", x=0.01, ha="left", fontsiz
 save(fig, "06_results_vs_baselines.png")
 
 # F7 per-crop AUC
-fig, ax = plt.subplots(figsize=(9, 8.5))
+fig, ax = plt.subplots(figsize=(9, max(8.5, 0.3 * len(pc_best))))
 ax.barh(pc_best.index, pc_best.values, color=[RED if v < 0.6 else (SAND if v < 0.75 else GREEN) for v in pc_best.values])
 ax.axvline(0.5, ls="--", color=GREY); ax.set_xlim(0.3, 1.0)
 for i, v in enumerate(pc_best.values): ax.text(v + 0.005, i, f"{v:.2f}", va="center", fontsize=10)

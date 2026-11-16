@@ -7,7 +7,7 @@
 ![Python](https://img.shields.io/badge/Python-3.10%2B-3776AB?logo=python&logoColor=white)
 ![LightGBM](https://img.shields.io/badge/Model-LightGBM-2E7D32)
 ![NASA POWER](https://img.shields.io/badge/Data-NASA%20POWER-0B3D91)
-![Score on unseen states](https://img.shields.io/badge/Score%20on%20unseen%20states-0.80-blue)
+![Score on unseen states](https://img.shields.io/badge/Score%20on%20unseen%20states-0.81-blue)
 
 AgriGate is a full-stack website backed by a **machine-learning model**. Pick any place in the 48 mainland United States and the crops you want to grow. AgriGate then tells you:
 
@@ -149,7 +149,7 @@ In one sentence: **we collected public climate and soil data for every US county
 |---|---|
 | **1. Collect** | Downloaded NASA climate, USDA soil, USGS nutrient and USDA farm-census data |
 | **2. Build** | Joined everything into one training table: every county × every crop |
-| **3. Train** | Trained a LightGBM model: 446 decision trees that learn from each other's mistakes |
+| **3. Train** | Trained a LightGBM model: 497 decision trees that learn from each other's mistakes |
 | **4. Test** | Tested it on whole states it never saw, so it can't just memorise |
 | **5. Project** | Extended NASA's climate trend to 2050 and asked the model again |
 | **6. Serve** | A Python server loads the saved model; the website asks it for any location |
@@ -165,7 +165,7 @@ All data is **free and public**.
 | **NASA POWER** | Rain, air temperature, daily temperature range, root-zone soil wetness | 2001–2020 averages for every county (model input), plus 1984–2025 monthly data for climate trends |
 | **USDA NRCS SSURGO** soil survey | Soil pH, organic matter, texture, salinity, drainage, water-holding capacity | Area-weighted average for each county, queried with SQL from Soil Data Access |
 | **USGS** soil geochemistry (Data Series 801 / Open-File Report 2014-1082) | Soil nutrients: phosphorus, potassium, sulfur, calcium, magnesium, zinc, iron, manganese, copper, molybdenum | The 5 nearest survey sites to each county, weighted by distance |
-| **USDA NASS** Census of Agriculture (2017, 2022) | Which crops each county really harvests, and yields (2014–2023) | **The answers the model learns from** |
+| **USDA NASS** Census of Agriculture (2017, 2022) | Which of 57 crops each county really harvests, and yields (2014–2023) | **The answers the model learns from** |
 
 **The answer key:** where America really grows its crops, according to the farm census.
 
@@ -183,7 +183,8 @@ Compare the two sets of maps: cotton grows where it's **hot**, corn where summer
 
 The scripts in [`training/`](training/) download, clean and join the data into **one table**:
 
-- **80,808 rows**, one for every county × crop pair (3,108 counties × 26 crops)
+- **177,156 rows**, one for every county × crop pair (3,108 counties × 57 crops)
+- **57 crops**: field crops (corn, soybeans, wheat, oats, barley, rye, sorghum, cotton, rice, canola, sunflowers and more), dry beans, peas, lentils and chickpeas, and vegetables (onions, carrots, squash, pumpkins, sweet potatoes, tomatoes and more)
 - **94 clues per row** (the model's inputs), for example:
   - **Climate (NASA):** yearly and summer rain, average/warmest/coldest temperature, dry months, aridity, root-zone wetness
   - **Soil (USDA):** pH, organic matter, texture, salinity, drainage
@@ -221,34 +222,35 @@ LightGBM (**Light G**radient **B**oosting **M**achine) builds the model out of m
 - **Boosting:** trees are added one at a time, and each new tree is trained to fix the mistakes the earlier trees still make.
 - The final answer adds up the scores from every tree and turns the total into a chance from 0% to 100%.
 
-Nobody writes the questions: **the computer finds the best ones by studying the 80,808 rows.**
+Nobody writes the questions: **the computer finds the best ones by studying the 177,156 rows.**
 
 **Real trees from our trained model.** Early trees ask big questions (which crop is it?); later trees make small corrections:
 
-![Four real trees from the model: tree 1, 2, 100 and 446](training/figures/11_lightgbm_trees.png)
+![Four real trees from the model: tree 1, 2, 100 and 497](training/figures/11_lightgbm_trees.png)
 
-**Boosting in action:** real predictions built up tree by tree. After 1 tree, every example sits near the starting guess. By tree 446, corn in Iowa reaches 99% and cotton in Iowa reaches 0%, matching the farm census.
+**Boosting in action:** real predictions built up tree by tree. After 1 tree, every example sits near the starting guess. By tree 497, corn in Iowa reaches 98% and cotton in Iowa reaches 0%, matching the farm census.
 
 ![Predictions built up tree by tree, and how much each new tree still improves the model](training/figures/12_lightgbm_boosting.png)
 
 ### Using the trained model on the website
 
-Training needs the LightGBM library, but **using** the trained model doesn't. The model is saved as a text file of 446 trees, and [`model/tree_model.py`](model/tree_model.py) follows those trees in plain Python, question by question. We checked it against LightGBM on thousands of rows: the predictions are identical (differences below 0.000000000000001). This is why AgriGate runs on any computer without extra system libraries.
+Training needs the LightGBM library, but **using** the trained model doesn't. The model is saved as a text file of 497 trees, and [`model/tree_model.py`](model/tree_model.py) follows those trees in plain Python, question by question. We checked it against LightGBM on thousands of rows: the predictions are identical (differences below 0.000000000000001). This is why AgriGate runs on any computer without extra system libraries.
 
 ### Settings
 
 ```python
-params = dict(objective="binary", learning_rate=0.03, num_leaves=31,
-              min_data_in_leaf=50, feature_fraction=0.5)
+params = dict(objective="binary", learning_rate=0.05, num_leaves=63,
+              min_data_in_leaf=100, feature_fraction=0.9, lambda_l2=20)
 ```
 
 | Setting | Value | Plain meaning |
 |---|---|---|
-| Learning rate | 0.03 | Each tree makes only a small correction |
-| Leaves per tree | 31 | How detailed each tree can be |
-| Rows per leaf (minimum) | 50 | No rule can be built from just a few counties |
-| Clues per tree | 50% | Each tree sees a random half of the clues, so no single clue takes over |
-| Trees | 446 | Chosen by early stopping (see below) |
+| Learning rate | 0.05 | Each tree makes only a small correction |
+| Leaves per tree | 63 | How detailed each tree can be |
+| Rows per leaf (minimum) | 100 | No rule can be built from just a few counties |
+| Clues per tree | 90% | Each tree sees a random 90% of the clues, so no single clue takes over |
+| L2 penalty | 20 | Keeps leaf scores small, so no single tree can push too hard |
+| Trees | 497 | Chosen by early stopping (see below) |
 
 We tried **12 different combinations** of settings, scored each one on hidden states only, and kept the best:
 
@@ -270,9 +272,9 @@ Neighbouring counties are almost identical, so testing on a county next door to 
 
 This is **cross-validation grouped by state** (`GroupKFold`).
 
-**Early stopping:** in the real training curve below, the error on the states the model trained on (grey) keeps falling toward zero, because it's starting to memorise. The error on hidden states (blue) levels off around 0.13 and then slowly gets worse. **We stop at 446 trees**, before memorising takes over.
+**Early stopping:** in the real training curve below, the error on the states the model trained on (grey) keeps falling toward zero, because it's starting to memorise. The error on hidden states (blue) levels off around 0.14 and then slowly gets worse. **We stop at 497 trees**, before memorising takes over.
 
-<p align="center"><img src="training/figures/mini_curve.png" alt="Training curve: training error keeps falling, hidden-state error levels off; training stops at 446 trees" width="560"></p>
+<p align="center"><img src="training/figures/mini_curve.png" alt="Training curve: training error keeps falling, hidden-state error levels off; training stops at 497 trees" width="560"></p>
 
 ---
 
@@ -280,32 +282,34 @@ This is **cross-validation grouped by state** (`GroupKFold`).
 
 All scores are measured **on states the model never saw during training**.
 
-![Report card: coin flip 0.50, hand-written rules 0.53, LightGBM 0.80, perfect 1.00](training/figures/kid_04_report_card.png)
+![Report card: coin flip 0.50, hand-written rules 0.58, LightGBM 0.81, perfect 1.00](training/figures/kid_04_report_card.png)
 
-### What does 0.80 mean?
+### What does 0.81 mean?
 
 The score is the **AUC** (area under the curve). Take one county that really grows a crop and one that doesn't, and ask the model which is more likely to grow it:
 
 | Score | Meaning |
 |---|---|
 | **1.00** | Always picks the right county (perfect) |
-| **0.80** | **Our model:** picks the right one 80% of the time |
-| **0.53** | Our hand-written rules: barely better than guessing |
+| **0.81** | **Our model:** picks the right one 81% of the time |
+| **0.58** | Our hand-written rules: only a little better than guessing |
 | **0.50** | A coin flip: no skill at all |
 
-We report the **median score per crop**. The overall score across all crops (0.975) looks better but is inflated, because most crops aren't grown in most counties, which makes "no" easy to guess.
+We report the **median score per crop**. The overall score across all crops (0.96) looks better but is inflated, because most crops aren't grown in most counties, which makes "no" easy to guess.
 
 | Model | Score per crop (median) | Yield R² |
 |---|---|---|
-| Hand-written rules | 0.53 | — |
-| LightGBM (default settings) | 0.79 | 0.36 |
-| **LightGBM (tuned)** | **0.80** | **0.36** |
+| Hand-written rules | 0.58 | — |
+| LightGBM (default settings) | 0.82 | 0.36 |
+| **LightGBM (tuned)** | **0.81** | **0.36** |
+
+On the full 5-fold test the default settings scored slightly higher than the setting picked by the quicker 3-fold search. The difference is small, and we report both honestly.
 
 A second LightGBM model predicts **harvest size (yield)**. It explains 36% of the differences between counties (R² 0.36), where simply using each crop's average explains 0%.
 
 ### Score for each crop
 
-Strongest on big field crops: **peanuts 0.95, cotton 0.94, soybeans 0.92, sugar beets 0.92, rice 0.91, corn 0.85**. It's weaker on vegetables, which are grown commercially in only a few states, so there are few examples to learn from.
+Strongest on field crops and pulses: **flax 0.97, lentils 0.97, chickpeas 0.96, peanuts 0.95, cotton 0.95, soybeans 0.93, sugar beets 0.92, rice 0.92, corn 0.86**. It's weaker on vegetables, which are grown commercially in only a few states, so there are few examples to learn from.
 
 ![Score for each crop on unseen states](training/figures/07_per_crop_accuracy.png)
 
@@ -317,9 +321,9 @@ The real USDA map of corn counties (left) next to the model's guess, where each 
 
 ### What the model relies on
 
-Among the information about a location, **NASA climate data carries 43%** of the model's decisions, the largest share of any source.
+Among the information about a location, **NASA climate data carries 39%** of the model's decisions, the largest share of any source.
 
-<p align="center"><img src="training/figures/kid_09_what_matters.png" alt="NASA climate 43%, USDA soil 27%, USGS nutrients 15%, match clues 15%" width="620"></p>
+<p align="center"><img src="training/figures/kid_09_what_matters.png" alt="NASA climate 39%, USDA soil 26%, USGS nutrients 17%, match clues 19%" width="620"></p>
 
 ---
 
@@ -334,7 +338,7 @@ Among the information about a location, **NASA climate data carries 43%** of the
 
 ![Des Moines: 42 years of NASA temperature data and the linear trend to 2050](training/figures/kid_05_desmoines_temp.png)
 
-With that warmer climate (about +1.5 °C and 9% less rain), **wheat rises from 51% to 94%**, while corn and soybeans stay near the top:
+With that warmer climate (about +1.5 °C and 9% less rain), **wheat rises from 26% to 84%** (and sorghum from 4% to 54%), while corn and soybeans stay near the top:
 
 ![Des Moines crops today versus 2050](training/figures/kid_06_crops_2050.png)
 
@@ -412,6 +416,7 @@ python3 training/tune_and_figures.py
 - **"Grown" isn't the same as "can grow":** harvest records also reflect markets, irrigation and tradition. The model learns where crops *are* grown commercially.
 - **The 2050 view is a trend, not a forecast:** it extends observed NASA data in a straight line, and rain trends are weak.
 - **Weaker for vegetables**, which are grown commercially in only a few states.
+- **57 crops, not every plant:** the model only knows crops the USDA census counts in every county. On the website, 48 plants get a model prediction; the rest (cover crops, herbs, trees) use the soil and nutrient rules only.
 - **Mainland United States only:** that's where the training answers come from.
 
 *AgriGate is a support tool. It doesn't replace a soil test, local experts or a farmer's own judgment.*

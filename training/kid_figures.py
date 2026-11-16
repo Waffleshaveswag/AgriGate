@@ -83,7 +83,7 @@ ax.set_title("The report card: how often the model ranks a real crop county abov
 save(fig, "kid_04_report_card.png")
 
 # 5 + 6 -------------------------------------------------------------- Des Moines climate + 2050 (real NASA POWER + model)
-sys.path.insert(0, str(Path("/home/user/AgriGate_LightGBM/model")))
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "model"))
 import agrigate_model as AG
 ct = AG.climate_trend(41.6, -93.6, 2050)
 yrs = np.array(ct["years"]); t = ct["temperature"]
