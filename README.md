@@ -352,7 +352,6 @@ With that warmer climate (about +1.5 °C and 9% less rain), **wheat rises from 5
 - **Planning:** a two-year rotation that starts with your primary crop, and additional plants ranked by the LightGBM model.
 - **Climate & Soil:** NASA climate trend charts with the regression line to 2050, and how each of your crops' chances changes.
 - **Guide:** a five-step walkthrough that opens on your first visit.
-- **Dark mode by default.** Use the theme button (top right) to switch to Light or Auto.
 
 ![Built-in step-by-step guide](docs/screenshot_guide.jpg)
 
