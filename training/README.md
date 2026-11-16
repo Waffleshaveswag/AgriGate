@@ -1,6 +1,6 @@
 # AgriVision LightGBM training dataset
 
-**`county_crop_train.csv` / `.parquet`**: 80,808 rows = **3,108 US counties × 26 crops**, **94 features** and **real USDA labels**. It's built for gradient boosting (LightGBM, XGBoost, CatBoost). The text columns are already typed as categories in the parquet file.
+**`county_crop_train.csv` / `.parquet`**: 177,156 rows = **3,108 US counties × 57 crops**, **94 features** and **real USDA labels**. It's built for gradient boosting (LightGBM, XGBoost, CatBoost). The text columns are already typed as categories in the parquet file.
 
 ## The question it answers
 > "Given the soil, nutrients and climate of this county, and this crop's needs: is the crop grown here commercially, and how good is its yield?"
@@ -54,17 +54,17 @@ python3 train_lightgbm.py          # baseline models -> model_grown.txt, model_y
 
 ## Tuned model (`tune_and_figures.py`)
 **Step 1, data:** NASA POWER climate + USDA SSURGO soil + USGS nutrients, with USDA NASS as the answers.
-**Step 2, prepared and adjusted for LightGBM:** joined into 80,808 county × crop rows; gaps filled; pH-adjusted nutrient levels; 25 engineered match features.
-**Step 3, tuned and trained LightGBM:** 12 settings searched with 3-fold cross-validation grouped by state; final 5-fold test on unseen states; early stopping at 446 trees.
+**Step 2, prepared and adjusted for LightGBM:** joined into 177,156 county × crop rows; gaps filled; pH-adjusted nutrient levels; 25 engineered match features.
+**Step 3, tuned and trained LightGBM:** 12 settings searched with 3-fold cross-validation grouped by state; final 5-fold test on unseen states; early stopping at 497 trees.
 
 | | Hand-written rules | LightGBM default | **LightGBM tuned** |
 |---|---|---|---|
-| Grown? median per-crop AUC | 0.53 | 0.79 | **0.80** |
+| Grown? median per-crop AUC | 0.58 | 0.82 | **0.81** |
 | Yield R² (crop average = 0.00) | — | 0.36 | **0.36** |
 
-Tuning was run for the "grown?" model and raised its median per-crop AUC from 0.79 to 0.80. The yield model uses the same settings and scores the same as the default.
-Among location data, **NASA POWER climate carries 43 % of the model's importance**, SSURGO soil 27 %, USGS nutrients 15 %, engineered match features 15 %.
-Tuned settings: `{'learning_rate': 0.03, 'num_leaves': 31, 'min_data_in_leaf': 50, 'feature_fraction': 0.5, 'bagging_fraction': 1.0, 'bagging_freq': 1, 'lambda_l2': 0.0}`
+Tuning picked the best of 12 settings on a quicker 3-fold test (0.84). On the full 5-fold test the default settings scored slightly higher (0.82 vs 0.81), so the gain from tuning did not hold up. The yield model scores the same either way.
+Among location data, **NASA POWER climate carries 39 % of the model's importance**, SSURGO soil 26 %, USGS nutrients 17 %, engineered match features 19 %.
+Tuned settings: `{'learning_rate': 0.05, 'num_leaves': 63, 'min_data_in_leaf': 100, 'feature_fraction': 0.9, 'bagging_fraction': 1.0, 'bagging_freq': 1, 'lambda_l2': 20.0}`
 
 Final models: `models/lightgbm_grown_tuned.txt`, `models/lightgbm_yield_tuned.txt`.
 
@@ -81,5 +81,5 @@ Final models: `models/lightgbm_grown_tuned.txt`, `models/lightgbm_yield_tuned.tx
 | 08_yield_predicted_vs_actual.png | Predicted vs real USDA yields |
 | 09_feature_importance_by_source.png | NASA climate is the biggest location factor |
 | 10_map_corn_actual_vs_predicted.png | US map: real corn counties vs model prediction |
-| 11_lightgbm_trees.png | Real trees from the model (tree 1, 2, 100, 446): the yes/no questions and leaf scores (`visualize_lightgbm.py`) |
+| 11_lightgbm_trees.png | Real trees from the model (tree 1, 2, 100, 497): the yes/no questions and leaf scores (`visualize_lightgbm.py`) |
 | 12_lightgbm_boosting.png | Boosting: real predictions built up tree by tree, and how each new tree corrects less (`visualize_lightgbm.py`) |
