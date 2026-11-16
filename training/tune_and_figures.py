@@ -109,7 +109,7 @@ def save(fig, name):
     fig.savefig(FIG / name, bbox_inches="tight", facecolor="white"); plt.close(fig); print("figure", name)
 
 # F1 pipeline
-fig, ax = plt.subplots(figsize=(15, 6.2)); ax.axis("off"); ax.set_xlim(0, 15); ax.set_ylim(0, 6.2)
+fig, ax = plt.subplots(figsize=(15, 6.9)); ax.axis("off"); ax.set_xlim(0, 15); ax.set_ylim(0, 6.9)
 def box(x, y, w, h, title, lines, color):
     ax.add_patch(FancyBboxPatch((x, y), w, h, boxstyle="round,pad=0.08,rounding_size=0.18", fc=color, ec="none", alpha=0.95))
     ax.text(x + 0.18, y + h - 0.32, title, color="white", fontsize=13, weight="bold", va="top")
@@ -127,7 +127,7 @@ arrow(9.25, 10.15)
 box(10.2, 0.7, 4.6, 4.8, "2  Tune + train LightGBM", [f"• {len(space)} settings searched", "• tested on states it never saw", "  (5-fold, grouped by state)",
      "• early stopping", f"• grown? AUC {pc_best.median():.2f} per crop", f"  (rules alone {pc_rule.median():.2f})", f"• yield R² {res['yield_r2']['lightgbm_tuned']:.2f}",
      "  (crop average 0.00)"], DARK)
-ax.text(0.1, 6.15, "From NASA data to a trained crop model", fontsize=19, weight="bold", color=DARK, va="top")
+ax.text(0.1, 6.85, "From NASA data to a trained crop model", fontsize=19, weight="bold", color=DARK, va="top")
 save(fig, "01_pipeline.png")
 
 # F2 data preparation: feature groups + dataset size
