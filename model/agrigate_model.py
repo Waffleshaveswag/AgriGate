@@ -7,6 +7,9 @@ agrigate_model.py - the trained LightGBM models behind AgriGate's crop recommend
 
 Models: model/models/lightgbm_grown_tuned.txt, lightgbm_yield_tuned.txt (LightGBM, tuned with 5-fold CV grouped by state)
 Training data: NASA POWER climate + USDA SSURGO soil + USGS soil nutrients, with USDA NASS county crop data as the answers.
+
+The saved LightGBM trees are run by tree_model.py (plain Python), so the LightGBM library is not needed to use the
+website: only to retrain. The predictions are the same as LightGBM's.
 """
 import json, math, ssl, urllib.parse, urllib.request
 from functools import lru_cache
@@ -14,7 +17,8 @@ from pathlib import Path
 
 import numpy as np
 import pandas as pd
-import lightgbm as lgb
+
+from tree_model import TreeModel
 
 HERE = Path(__file__).resolve().parent
 try:                                   # trusted certificates for https, so NASA POWER works on any computer
@@ -26,10 +30,20 @@ META = json.load(open(HERE / "data" / "feature_columns.json"))
 FEAT, CAT = META["features"], META["categorical"]
 RESULTS = json.load(open(HERE / "data" / "final_results.json"))
 DATA = pd.read_parquet(HERE / "data" / "county_crop_train.parquet")
-for c in CAT:
-    DATA[c] = DATA[c].astype("category")
-GROWN = lgb.Booster(model_file=str(HERE / "models" / "lightgbm_grown_tuned.txt"))
-YIELD = lgb.Booster(model_file=str(HERE / "models" / "lightgbm_yield_tuned.txt"))
+GROWN = TreeModel(HERE / "models" / "lightgbm_grown_tuned.txt")
+YIELD = TreeModel(HERE / "models" / "lightgbm_yield_tuned.txt")
+CAT_COLS = [f for f in FEAT if f in CAT]             # categorical features, in the order the model saw them
+
+
+def _run(model, frame):
+    """Run a model on rows of the training table (text categories become the codes the model was trained with)."""
+    X = frame[FEAT].copy()
+    for col, names in zip(CAT_COLS, model.pandas_categorical):
+        code = {name: i for i, name in enumerate(names)}
+        X[col] = X[col].astype(str).map(code).astype(float)
+    return model.predict(X.astype(float).to_numpy().tolist())
+
+
 YIELD_CROPS = set(DATA.loc[DATA.yield_rel.notna(), "crop"].astype(str))
 COUNTIES = DATA.drop_duplicates("fips")[["fips", "state", "county", "lat", "lon"]].reset_index(drop=True)
 MODEL_INFO = {"name": "LightGBM (tuned)",
@@ -55,8 +69,8 @@ def county_rows(lat, lon):
     d = (COUNTIES.lat - lat) ** 2 + ((COUNTIES.lon - lon) * math.cos(math.radians(lat))) ** 2
     c = COUNTIES.loc[d.idxmin()]
     rows = DATA[DATA.fips == c.fips].copy()
-    rows["chance_grown"] = GROWN.predict(rows[FEAT])
-    rows["yield_vs_typical"] = YIELD.predict(rows[FEAT])
+    rows["chance_grown"] = _run(GROWN, rows)
+    rows["yield_vs_typical"] = _run(YIELD, rows)
     county = {"fips": c.fips, "name": c.county, "state": c.state, "distance_km": round(math.sqrt(d.min()) * 111, 1)}
     return county, rows
 
@@ -111,7 +125,7 @@ def future(lat, lon, year=2050):
     fut["clim_months_above_10c"] = np.minimum(12, fut.clim_months_above_10c + np.round(dT / 3))
     fut["m_temp_gap"] = np.maximum(0, np.maximum(fut.crop_temp_min_c - fut.clim_t_warmest, fut.clim_t_warmest - fut.crop_temp_max_c))
     fut["m_rain_ratio"] = fut.clim_rain_mm / fut.crop_rain_min_mm
-    after = GROWN.predict(fut[FEAT])
+    after = _run(GROWN, fut)
     out = pd.DataFrame({"crop": now.crop.astype(str).values, "now": now.chance_grown.values, "future": after})
     out["change"] = out.future - out.now
     return {"ok": True, "county": county,
