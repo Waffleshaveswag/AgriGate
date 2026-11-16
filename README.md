@@ -106,7 +106,7 @@ AgriGate runs on **Python 3**. You only install it once per computer, and it's f
    |---|---|
    | `py -m pip install -r model/requirements.txt` | `python3 -m pip install -r model/requirements.txt` |
 
-   This installs LightGBM, pandas, NumPy, PyArrow and certifi.
+   This installs pandas, NumPy, PyArrow and certifi. You don't need to install LightGBM itself: AgriGate reads the trained model file with its own small reader (see [Project structure](#project-structure)).
 4. **Start AgriGate** (type this in the same window; every time you want to use AgriGate, open a terminal in the folder again and run this line):
 
    | Windows | Mac |
@@ -231,6 +231,10 @@ Nobody writes the questions: **the computer finds the best ones by studying the 
 
 ![Predictions built up tree by tree, and how much each new tree still improves the model](training/figures/12_lightgbm_boosting.png)
 
+### Using the trained model on the website
+
+Training needs the LightGBM library, but **using** the trained model doesn't. The model is saved as a text file of 446 trees, and [`model/tree_model.py`](model/tree_model.py) follows those trees in plain Python, question by question. We checked it against LightGBM on thousands of rows: the predictions are identical (differences below 0.000000000000001). This is why AgriGate runs on any computer without extra system libraries.
+
 ### Settings
 
 ```python
@@ -348,6 +352,7 @@ With that warmer climate (about +1.5 °C and 9% less rain), **wheat rises from 5
 - **Planning:** a two-year rotation that starts with your primary crop, and additional plants ranked by the LightGBM model.
 - **Climate & Soil:** NASA climate trend charts with the regression line to 2050, and how each of your crops' chances changes.
 - **Guide:** a five-step walkthrough that opens on your first visit.
+- **Dark mode by default.** Use the theme button (top right) to switch to Light or Auto.
 
 ![Built-in step-by-step guide](docs/screenshot_guide.jpg)
 
@@ -362,6 +367,7 @@ AgriGate/
 ├── render.yaml                   Settings for optional hosting on Render
 ├── model/
 │   ├── agrigate_model.py         Loads the models; predict, climate trend, 2050 re-run
+│   ├── tree_model.py             Runs the saved LightGBM trees in plain Python (no LightGBM install needed)
 │   ├── models/                   The trained LightGBM models (crop chance, yield)
 │   ├── data/                     The training table and feature list
 │   └── requirements.txt          Python libraries the model needs
@@ -393,7 +399,7 @@ The finished training table is included, so you can retrain without downloading 
 
 ```bash
 cp model/data/county_crop_train.parquet model/data/feature_columns.json training/
-pip install -r model/requirements.txt scikit-learn matplotlib
+pip install -r model/requirements.txt lightgbm scikit-learn matplotlib
 python3 training/tune_and_figures.py
 ```
 
