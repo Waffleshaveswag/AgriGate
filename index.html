@@ -1,15 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" class="h-full w-full">
 <head>
-  <script>
-    // Dark mode by default (set before the page draws, so there is no flash of the light theme).
-    // A choice made with the theme button (Dark / Light / Auto) is remembered and used instead.
-    (function () {
-      var mode = 'dark';
-      try { mode = localStorage.getItem('agrigate_theme') || 'dark'; } catch (e) {}
-      if (mode === 'dark' || mode === 'light') document.documentElement.setAttribute('data-theme', mode);
-    })();
-  </script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>AgriGate</title>
@@ -1054,8 +1045,8 @@ window.USGS_SOIL_P=[[31.315,-87.117,200.0],[33.852,-86.904,190.0],[31.218,-85.87
     };
 
     // --- THEME, INSPECTOR TABS & WATER PLANNER STATE ---
-    let currentThemeMode = 'dark';   // dark is the default; a choice made with the theme button is remembered
-    try { currentThemeMode = localStorage.getItem('agrigate_theme') || 'dark'; } catch (e) {}
+    let currentThemeMode = 'system';
+    try { currentThemeMode = localStorage.getItem('agrigate_theme') || 'system'; } catch (e) {}
     function applyTheme(mode) {
       currentThemeMode = mode;
       const root = document.documentElement;
