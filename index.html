@@ -2600,9 +2600,19 @@ window.USGS_SOIL_P=[[31.315,-87.117,200.0],[33.852,-86.904,190.0],[31.218,-85.87
       peanut: 'Peanuts', peanuts: 'Peanuts',
       tomato: 'Tomatoes', tomatoes: 'Tomatoes',
       lettuce: 'Lettuce', broccoli: 'Broccoli', spinach: 'Spinach',
-      pepper: 'Chilli Peppers', peppers: 'Chilli Peppers', bell_pepper: 'Chilli Peppers',
-      // (site "peas" = dry field peas; the model's "Green Peas" is a different census crop, so not mapped)
-      kale: 'Kale', endive: 'Endive', cress: 'Cress'
+      pepper: 'Chilli Peppers', peppers: 'Chilli Peppers', bell_pepper: 'Bell Peppers',
+      kale: 'Kale', endive: 'Endive', cress: 'Cress',
+      // more USDA census crops the model learned
+      oats: 'Oats', oat: 'Oats', barley: 'Barley', rye: 'Rye', cereal_rye: 'Rye', triticale: 'Triticale',
+      sorghum: 'Sorghum', proso_millet: 'Millet', sweet_corn: 'Sweet Corn',
+      sunflower: 'Sunflowers', sunflowers: 'Sunflowers', safflower: 'Safflower', canola: 'Canola',
+      mustard: 'Mustard', flax: 'Flax', buckwheat: 'Buckwheat',
+      dry_bean: 'Dry Beans', dry_beans: 'Dry Beans', peas: 'Dry Peas', pea: 'Dry Peas', field_peas: 'Dry Peas',
+      lentil: 'Lentils', lentils: 'Lentils', chickpea: 'Chickpeas', chickpeas: 'Chickpeas',
+      squash: 'Squash', pumpkin: 'Pumpkins', melon: 'Cantaloupe', melons: 'Cantaloupe',
+      onion: 'Onions', onions: 'Onions', onions_bulb: 'Onions', garlic: 'Garlic',
+      carrot: 'Carrots', carrots: 'Carrots', celery: 'Celery', radish: 'Radishes', turnip: 'Turnips',
+      brussels_sprouts: 'Brussels Sprouts', sweet_potato: 'Sweet Potatoes', sweet_potatoes: 'Sweet Potatoes'
     };
     window.lgbmPrediction = window.lgbmPrediction || null;
     const __lgbmCache = {};      // key -> prediction object, or {failed:true, offline, error}

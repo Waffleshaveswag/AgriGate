@@ -51,7 +51,7 @@ MODEL_INFO = {"name": "LightGBM (tuned)",
               "rule_baseline_auc": round(RESULTS["grown_auc_median_per_crop"]["rule_tree"], 2),
               "yield_r2": round(RESULTS["yield_r2"]["lightgbm_tuned"], 2),
               "tested_on": "states the model never saw (5-fold, grouped by state)",
-              "trained_on": "NASA POWER climate + USDA SSURGO soil + USGS nutrients; labels from USDA NASS (3,108 counties x 26 crops)"}
+              "trained_on": "NASA POWER climate + USDA SSURGO soil + USGS nutrients; labels from USDA NASS (3,108 counties x 57 crops)"}
 
 
 def _num(v):

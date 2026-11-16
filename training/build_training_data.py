@@ -58,6 +58,18 @@ CENSUS_CROPS = {
     "PEPPERS, CHILE - ACRES HARVESTED": "Chilli Peppers", "PEAS, GREEN, (EXCL SOUTHERN) - ACRES HARVESTED": "Green Peas",
     "ASPARAGUS - ACRES HARVESTED": "Asparagus", "BEETS - ACRES HARVESTED": "Beet", "GREENS, KALE - ACRES HARVESTED": "Kale",
     "ESCAROLE & ENDIVE - ACRES HARVESTED": "Endive", "WATERCRESS - ACRES HARVESTED": "Cress",
+    # more census crops added later
+    "OATS - ACRES HARVESTED": "Oats", "BARLEY - ACRES HARVESTED": "Barley", "RYE - ACRES HARVESTED": "Rye",
+    "TRITICALE - ACRES HARVESTED": "Triticale", "SORGHUM, GRAIN - ACRES HARVESTED": "Sorghum", "MILLET, PROSO - ACRES HARVESTED": "Millet",
+    "SWEET CORN - ACRES HARVESTED": "Sweet Corn", "SUNFLOWER - ACRES HARVESTED": "Sunflowers", "SAFFLOWER - ACRES HARVESTED": "Safflower",
+    "CANOLA - ACRES HARVESTED": "Canola", "MUSTARD, SEED - ACRES HARVESTED": "Mustard", "FLAXSEED - ACRES HARVESTED": "Flax",
+    "BUCKWHEAT - ACRES HARVESTED": "Buckwheat", "BEANS, DRY EDIBLE, (EXCL CHICKPEAS & LIMA) - ACRES HARVESTED": "Dry Beans",
+    "PEAS, DRY EDIBLE - ACRES HARVESTED": "Dry Peas", "LENTILS - ACRES HARVESTED": "Lentils", "CHICKPEAS - ACRES HARVESTED": "Chickpeas",
+    "BEANS, SNAP - ACRES HARVESTED": "Snap Beans", "SQUASH - ACRES HARVESTED": "Squash", "PUMPKINS - ACRES HARVESTED": "Pumpkins",
+    "MELONS, CANTALOUP - ACRES HARVESTED": "Cantaloupe", "PEPPERS, BELL - ACRES HARVESTED": "Bell Peppers",
+    "ONIONS, DRY - ACRES HARVESTED": "Onions", "GARLIC - ACRES HARVESTED": "Garlic", "CARROTS - ACRES HARVESTED": "Carrots",
+    "CELERY - ACRES HARVESTED": "Celery", "RADISHES - ACRES HARVESTED": "Radishes", "TURNIPS - ACRES HARVESTED": "Turnips",
+    "BRUSSELS SPROUTS - ACRES HARVESTED": "Brussels Sprouts", "OKRA - ACRES HARVESTED": "Okra", "SWEET POTATOES - ACRES HARVESTED": "Sweet Potatoes",
 }
 # NASS survey yield item -> plant (each crop keeps its own unit; yield_rel makes them comparable)
 YIELD_ITEMS = {
@@ -70,7 +82,7 @@ YIELD_ITEMS = {
 }
 YIELD_UNIT = {v: re.search(r"MEASURED IN (.*)", k).group(1).lower() for k, v in YIELD_ITEMS.items()}
 PERENNIAL = {"Grapes", "Asparagus", "Coffee", "Sugarcane", "Hay", "Strawberry"}
-SALT_SENSITIVE = {"Strawberry", "Green Peas", "Lettuce", "Radicchio", "Endive", "Cress", "Cucumbers", "Grapes", "Potatoes", "Corn",
+SALT_SENSITIVE = {"Strawberry", "Dry Beans", "Snap Beans", "Onions", "Carrots", "Celery", "Radishes", "Bell Peppers", "Cantaloupe", "Squash", "Pumpkins", "Sweet Corn", "Sweet Potatoes", "Okra", "Garlic", "Lentils", "Chickpeas", "Dry Peas", "Flax", "Buckwheat", "Green Peas", "Lettuce", "Radicchio", "Endive", "Cress", "Cucumbers", "Grapes", "Potatoes", "Corn",
                   "Chilli Peppers", "Eggplants", "Cabbage", "Broccoli", "Cauliflowers", "Rice", "Peanuts", "Watermelon"}
 NEED = {"low": 1, "medium": 2, "high": 3, "fixes own N": 0}
 NUTS = ["N", "P", "K", "S", "Ca", "Mg", "Zn", "Fe", "Mn", "Cu", "Mo"]
