@@ -46,7 +46,7 @@ No Node.js or other tools are needed: the website is plain HTML, CSS and JavaScr
 
 ### Quick start: one copy-paste
 
-Install Python first ([see below](#installing-python-if-you-dont-have-it)), then copy the whole line for your computer, paste it, and press **Enter**. It downloads AgriGate, installs the libraries and starts the website.
+Install Python first ([see below](#installing-python-if-you-dont-have-it)), then install this github by downloading and extracting the zip file. Then copy the whole line for your computer, paste it, and press **Enter**. It downloads AgriGate, installs the libraries and starts the website.
 
 **Windows:** press the Windows key, type **cmd**, press **Enter**, then paste:
 
