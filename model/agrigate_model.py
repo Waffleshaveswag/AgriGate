@@ -44,9 +44,6 @@ def _run(model, frame):
     return model.predict(X.astype(float).to_numpy().tolist())
 
 
-# The 17 model crops that also exist on the website (the other 9 census crops have no match in the site's crop list)
-SITE_CROPS = {"Broccoli", "Chilli Peppers", "Corn", "Cotton", "Cress", "Endive", "Hay", "Kale", "Lettuce", "Peanuts",
-              "Potatoes", "Rice", "Soybeans", "Spinach", "Sugar Beets", "Tomatoes", "Wheat"}
 YIELD_CROPS = set(DATA.loc[DATA.yield_rel.notna(), "crop"].astype(str))
 COUNTIES = DATA.drop_duplicates("fips")[["fips", "state", "county", "lat", "lon"]].reset_index(drop=True)
 MODEL_INFO = {"name": "LightGBM (tuned)",
@@ -71,7 +68,7 @@ def in_us(lat, lon):
 def county_rows(lat, lon):
     d = (COUNTIES.lat - lat) ** 2 + ((COUNTIES.lon - lon) * math.cos(math.radians(lat))) ** 2
     c = COUNTIES.loc[d.idxmin()]
-    rows = DATA[(DATA.fips == c.fips) & DATA.crop.astype(str).isin(SITE_CROPS)].copy()
+    rows = DATA[DATA.fips == c.fips].copy()
     rows["chance_grown"] = _run(GROWN, rows)
     rows["yield_vs_typical"] = _run(YIELD, rows)
     county = {"fips": c.fips, "name": c.county, "state": c.state, "distance_km": round(math.sqrt(d.min()) * 111, 1)}
